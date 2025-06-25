@@ -11,19 +11,23 @@ app.post('/enviar', async (req, res) => {
 
   try {
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'walterdanieltorresmeza@gmail.com',
-        pass: process.env.GMAIL_PASS,
-      },
+  host: 'smtp.office365.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.OUTLOOK_USER,
+    pass: process.env.OUTLOOK_PASS
+  }
+
+
     });
 
     const info = await transporter.sendMail({
-      from: '"Notificador WPM" <walter.torres@outliersconsulting.com>',
-      to,
-      subject,
-      html,
-    });
+  from: `"Notificador Claro" <${process.env.OUTLOOK_USER}>`,
+  to,
+  subject,
+  html,
+});
 
     res.json({ success: true, messageId: info.messageId });
   } catch (error) {
